@@ -1,0 +1,1 @@
+# JSi18nGenerator
