@@ -1,0 +1,28 @@
+{
+  "name": "jsi18ngenerator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Balabili/JSi18nGenerator.git"
+  },
+  "keywords": [
+    "i18n"
+  ],
+  "author": "xcsun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Balabili/JSi18nGenerator/issues"
+  },
+  "homepage": "https://github.com/Balabili/JSi18nGenerator#readme",
+  "dependencies": {
+    "koa": "^2.5.2",
+    "koa-ejs": "^4.1.2",
+    "koa-router": "^7.4.0",
+    "koa-views": "^6.1.4"
+  }
+}
