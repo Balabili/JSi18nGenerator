@@ -1,7 +1,7 @@
 export default {
 
-system_title: "Agent System Agent System",
+  system_title: "Agent System",
 
-home_official: ['Official', 'Website'],
-home_official_contact: item => `Contact Us ${item}`,
-}
+  home_official: ['Official', 'Website'],
+  home_official_contact: item => `Contact Us ${item}`,
+};

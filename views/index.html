@@ -12,20 +12,24 @@
 
 <body>
   <form action="/downloadxlsx" method="POST" enctype="multipart/form-data">
-    <input name="cn" type="file" accept=".js">
-    <input name="en" type="file" accept=".js">
+    <input name="cn" type="file" accept=".js">中文
+    <input name="en" type="file" accept=".js">英文
     <button type="submit">下载xlsx</button>
   </form>
   <div style="margin-top: 50px;"></div>
-  <form action="/downloadjs" method="POST" enctype="multipart/form-data">
-    <input name="xlsx" type="file" accept=".xlsx">
-    <button type="submit">下载js</button>
-  </form>
-  <div style="margin-top: 50px;"></div>
-  <form action="/combine2js" method="POST" enctype="multipart/form-data">
-    <input name="cn" type="file" accept=".js">
-    <input name="en" type="file" accept=".js">
-    <input name="xlsx" type="file" accept=".xlsx">
+  <form style="margin: 100px auto;text-align: center;" action="/combine2js" method="POST" enctype="multipart/form-data">
+    <div>
+      <label for="cn">中文</label>
+      <input id="cn" name="cn" type="file" accept=".js">
+    </div>
+    <div>
+      <label for="en">英文</label>
+      <input id="en" name="en" type="file" accept=".js">
+    </div>
+    <div>
+      <label for="xlsx">xlsx文件</label>
+      <input id="xlsx" name="xlsx" type="file" accept=".xlsx">
+    </div>
     <button type="submit">合并xlsx到js</button>
   </form>
 </body>

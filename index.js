@@ -6,6 +6,7 @@ const Koa = require('koa'),
   router = require('koa-router')(),
   koaBody = require('koa-body'),
   xlsx = require('node-xlsx'),
+  send = require('koa-send'),
   views = require('koa-views');
 
 app.use(koaBody({ multipart: true }));
@@ -84,19 +85,21 @@ function formatJS2Array(cnFile, enFile) {
   return newArr;
 }
 
-function buildXlsx(xlsxArr) {
+function buildXlsx(xlsxArr, fileName, isArrayObj) {
   const dataArr = [];
-  xlsxArr.forEach(item => {
-    dataArr.push([item.key, item.cn || '', item.en || '']);
-  });
+  if (isArrayObj) {
+    xlsxArr.forEach(item => {
+      dataArr.push([item.key, item.cn || '', item.en || '']);
+    });
+  }
   dataArr.unshift(['key', '中文', '英文']);
   const buffer = xlsx.build([
     {
       name: 'sheet1',
-      data: dataArr
+      data: isArrayObj ? dataArr : xlsxArr
     }
   ]);
-  fs.writeFileSync('./public/xlsx/test1.xlsx', buffer, { 'flag': 'w' });
+  fs.writeFileSync(`./public/xlsx/${fileName}.xlsx`, buffer, { 'flag': 'w' });
 }
 
 // 下载xlsx
@@ -107,58 +110,26 @@ router.post('/downloadxlsx', async (ctx) => {
   const enfile = fs.readFileSync(enFilePath, { encoding: 'UTF-8' });
   const cnfile = fs.readFileSync(cnFilePath, { encoding: 'UTF-8' });
   const xlsxArr = formatJS2Array(cnfile, enfile);
-  buildXlsx(xlsxArr);
-  ctx.body = 'success';
-});
-
-function formatArray2JS(dataList) {
-  const enArr = ['export default {'], cnArr = ['export default {'];
-  dataList.shift();
-  dataList.forEach(item => {
-    if (item[0] === '') {
-      enArr.push('');
-      cnArr.push('');
-    } else {
-      const enString = item[1];
-      if (enString[0] === '[' || enString.indexOf('${') !== -1) {
-        enArr.push(`${item[0]}: ${item[2]},`);
-        cnArr.push(`${item[0]}: ${item[1]},`);
-      } else {
-        enArr.push(`${item[0]}: "${item[2]}",`);
-        cnArr.push(`${item[0]}: "${item[1]}",`);
-      }
-    }
-  });
-  enArr.push('}');
-  cnArr.push('}');
-  const cnString = cnArr.join('\n');
-  const enString = enArr.join('\n');
-  fs.writeFileSync('./public/js/zh_CN.js', cnString);
-  fs.writeFileSync('./public/js/en_US.js', enString);
-}
-
-router.post('/downloadjs', async (ctx) => {
-  const xlsxPath = ctx.request.files.xlsx.path;
-  const list = xlsx.parse(xlsxPath);
-  const dataList = list[0].data;
-  formatArray2JS(dataList);
+  buildXlsx(xlsxArr, 'text1', true);
   ctx.body = 'success';
 });
 
 function combineXlsx2JS(xlsx, i18n) {
   const len = i18n.length;
-  xlsx.forEach(item => {
-    const key = item[0], 
-      cn = item[1],
-      en = item[2];
+  const xlsxRes = xlsx.forEach(item => {
+    const key = item[0], cn = item[1], en = item[2];
+    let noCurrentKey = true;
     for (let i = 0; i < len; i++) {
       if (i18n[i].key === key) {
         i18n[i].cn = cn;
         i18n[i].en = en;
+        noCurrentKey = false;
         break;
       }
     }
+    item[3] = noCurrentKey ? '失败' : '成功';
   });
+  return xlsx;
 }
 
 function downloadJS(i18n) {
@@ -197,9 +168,10 @@ router.post('/combine2js', async (ctx) => {
   const xlsxPath = files.xlsx.path;
   const list = xlsx.parse(xlsxPath);
   const dataList = list[0].data;
-  combineXlsx2JS(dataList, i18nArray);
+  const xlsxRes = combineXlsx2JS(dataList, i18nArray);
+  buildXlsx(xlsxRes, 'combineRes', false);
   downloadJS(i18nArray);
-  ctx.body = 'success';
+  await send(ctx, 'combineRes.xlsx', { root: __dirname + '/public/xlsx/' });
 });
 
 app.use(router.routes()).use(router.allowedMethods());
