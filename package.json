@@ -21,8 +21,11 @@
   "homepage": "https://github.com/Balabili/JSi18nGenerator#readme",
   "dependencies": {
     "koa": "^2.5.2",
+    "koa-body": "^4.0.4",
+    "koa-bodyparser": "^4.2.1",
     "koa-ejs": "^4.1.2",
     "koa-router": "^7.4.0",
-    "koa-views": "^6.1.4"
+    "koa-views": "^6.1.4",
+    "node-xlsx": "^0.12.1"
   }
 }

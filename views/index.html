@@ -11,9 +11,22 @@
 </head>
 
 <body>
-  <form action="/upload" method="POST">
-    <input type="file">
-    <button type="submit">提交</button>
+  <form action="/downloadxlsx" method="POST" enctype="multipart/form-data">
+    <input name="cn" type="file" accept=".js">
+    <input name="en" type="file" accept=".js">
+    <button type="submit">下载xlsx</button>
+  </form>
+  <div style="margin-top: 50px;"></div>
+  <form action="/downloadjs" method="POST" enctype="multipart/form-data">
+    <input name="xlsx" type="file" accept=".xlsx">
+    <button type="submit">下载js</button>
+  </form>
+  <div style="margin-top: 50px;"></div>
+  <form action="/combine2js" method="POST" enctype="multipart/form-data">
+    <input name="cn" type="file" accept=".js">
+    <input name="en" type="file" accept=".js">
+    <input name="xlsx" type="file" accept=".xlsx">
+    <button type="submit">合并xlsx到js</button>
   </form>
 </body>
 
