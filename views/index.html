@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="height: 100%;">
 
 <head>
   <meta charset="utf-8" />
@@ -10,28 +10,39 @@
   <script src="main.js"></script> -->
 </head>
 
-<body>
-  <form action="/downloadxlsx" method="POST" enctype="multipart/form-data">
-    <input name="cn" type="file" accept=".js">中文
-    <input name="en" type="file" accept=".js">英文
-    <button type="submit">下载xlsx</button>
-  </form>
-  <div style="margin-top: 50px;"></div>
-  <form style="margin: 100px auto;text-align: center;" action="/combine2js" method="POST" enctype="multipart/form-data">
-    <div>
-      <label for="cn">中文</label>
-      <input id="cn" name="cn" type="file" accept=".js">
-    </div>
-    <div>
-      <label for="en">英文</label>
-      <input id="en" name="en" type="file" accept=".js">
-    </div>
-    <div>
-      <label for="xlsx">xlsx文件</label>
-      <input id="xlsx" name="xlsx" type="file" accept=".xlsx">
-    </div>
-    <button type="submit">合并xlsx到js</button>
-  </form>
+<body style="height:100%; display: flex;flex-direction: column;align-items: center;justify-content: center;">
+  <div style="width: 300px;margin-bottom: 50px; display: flex;justify-content: space-between;">
+    <a href="#combine2js">合并xlsx到js</a>
+    <a href="#downloadxlsx">根据js生成xlsx</a>
+  </div>
+  <div style="width: 300px;height: 300px; overflow: hidden;">
+    <form id="combine2js" style="width:400px;height: 300px;" action="/combine2js" method="POST" enctype="multipart/form-data">
+      <div>
+        <label for="cn">中文:</label>
+        <input id="cn" name="cn" type="file" accept=".js">
+      </div>
+      <div style="margin-top: 10px;">
+        <label for="en">英文:</label>
+        <input id="en" name="en" type="file" accept=".js">
+      </div>
+      <div style="margin-top: 10px;margin-bottom: 10px;">
+        <label for="xlsx">xlsx文件:</label>
+        <input id="xlsx" name="xlsx" type="file" accept=".xlsx">
+      </div>
+      <button type="submit">合并xlsx到js</button>
+    </form>
+    <form id="downloadxlsx" style="width:400px;height: 300px; margin: 0 auto;" action="/downloadxlsx" method="POST" enctype="multipart/form-data">
+      <div>
+        <label for="downloadxlsxCN">中文:</label>
+        <input id="downloadxlsxCN" name="cn" type="file" accept=".js">
+      </div>
+      <div style="margin-top: 10px; margin-bottom: 10px;">
+        <label for="downloadxlsxEN">英文:</label>
+        <input id="downloadxlsxEN" name="en" type="file" accept=".js">
+      </div>
+      <button type="submit">下载xlsx</button>
+    </form>
+  </div>
 </body>
 
 </html>
